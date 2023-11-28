@@ -1,15 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:async_button_builder/async_button_builder.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/dio.dart' as DIO;
-import 'package:fgi_y2j/config/helper/helperFunction.dart';
-import 'package:fgi_y2j/features/authentication/controller/AuthenticationController.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import '../../features/Dialog/Authentication_Message.dart';
-import '../../features/cache_stroage/localStroage.dart';
+import '../../common/tools/Dialog/dialog.dart';
+import '../../view/Authentication/Controller/AuthenticationController.dart';
+import '../cache_stroage/localStroage.dart';
 import 'ConnectivityRequestRetrier.dart';
 
 class RetryOnConnectionChangeInterceptor extends Interceptor {
@@ -19,8 +18,8 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
 
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
+    EasyLoading.dismiss();
     final authenticationController=Get.put(AuthenticationController());
-    authenticationController.loginButtonState.value=const ButtonState.idle();
     if (_shouldRetry(err)) {
       // if(err.error is SocketException.)
       final ConnectivityResult connectivity=await Connectivity().checkConnectivity();
@@ -30,19 +29,15 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
         return;
       }
 
-     if(authenticationController.showNoNetDialog>0) authenticationErrorDialog('Warning', "No Internet Connection. Turn On Connection.");
-      authenticationController.showNoNetDialog--;
-      Future.delayed(Duration(seconds: 10),() {
-        authenticationController.showNoNetDialog++;
-      },);
+    authenticationErrorDialog('Warning', "No Internet Connection. Turn On Connection.");
       log("Solved : ${err.error is SocketException} ${connectivity}");
       DIO.Response response = await requestRetrier.scheduleRequestRetry(err);
 
       handler.resolve(response);
     } else {
       log("message : No Network Error ${err.type == DioErrorType.connectionError}");
-      // if(err.response.statusCode==)
-      printLog("Status Code : ${err.response!.statusCode}");
+      log("message : ${err.error.toString()} ${err.type == DioErrorType.connectionError}");
+
       if(err.response!=null && err.response!.statusCode==401){
         authenticationController.logout();
         return;
@@ -51,18 +46,23 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
         authenticationErrorDialog('Warning', "Server Busy. Try Again.");
 
       }else{
+
         if(err.response!.data.runtimeType==String){
-          // authenticationErrorDialog('Warning', err.response!.data??"Unknown Error Try Again");
+          authenticationErrorDialog('Warning', err.response!.data??"Unknown Error Try Again");
         }else{
           if(err.response!.statusCode==404){
+            log("message : ${err.response}");
             Map<String, dynamic> messageRes = err.response!.data;
-            String message=messageRes['message']??messageRes['msg']??"Error Happened";
+            log("Message eZORRO ; ${messageRes["message"]}");
+            dynamic message=(messageRes['message']??"Error Happened").toString();
+
             authenticationErrorDialog('Warning', message.isEmpty?"Unknown Error Try Again":message);
           }
           Map<String, dynamic> messageRes = err.response!.data;
-          String message=messageRes['message']??messageRes['msg']??"Error Happened";
-          // authenticationErrorDialog('Warning', message.isEmpty?"Unknown Error Try Again":message);
+          String message=messageRes['message']??"Error Happened";
+          authenticationErrorDialog('Warning', message.isEmpty?"Unknown Error Try Again":message);
         }
+
       }
 
     }

@@ -1,4 +1,4 @@
-import 'package:fgi_y2j/config/helper/helperFunction.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String USER_INFO='USER_INFO';
@@ -12,7 +12,7 @@ class LocalStorage{
   }
   static Future<String?> getUserInformation() async {
     final localBD=await SharedPreferences.getInstance();
-    printLog("${localBD.getString(USER_INFO)}");
+
     return localBD.getString(USER_INFO);
   }
   ///saved jwt
@@ -22,8 +22,6 @@ class LocalStorage{
   }
  static Future<String?> getJWT() async {
     final localBD=await SharedPreferences.getInstance();
-    printLog("${localBD.getString(USER_JWT)}");
     return localBD.getString(USER_JWT);
   }
-
 }

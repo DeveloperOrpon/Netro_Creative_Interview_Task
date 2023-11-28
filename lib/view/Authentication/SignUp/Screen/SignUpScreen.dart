@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:netro_creative_interview_work/common/constants/constants.dart';
 import 'package:netro_creative_interview_work/common_widget/FormFieldInput.dart';
-import 'package:netro_creative_interview_work/screen/Authentication/Controller/AuthenticationController.dart';
-import 'package:netro_creative_interview_work/screen/Authentication/SignUp/Screen/OtpVerifyScreen.dart';
+import 'package:netro_creative_interview_work/view/Authentication/Controller/AuthenticationController.dart';
+import 'package:netro_creative_interview_work/view/Authentication/SignUp/Screen/OtpVerifyScreen.dart';
+
+import '../../../../common/tools/Dialog/dialog.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -154,7 +156,13 @@ class SignUpScreen extends StatelessWidget {
                             child: Text("Sign up"),
                             onPressed: () {
                               if(authController.signUpFormKey.currentState!.validate()){
-                                Get.to(OtpVerifyScreen(email: authController.emailController.text),transition: Transition.rightToLeft);
+                                loadingDialog(context);
+                                authController.signUp(context).then((value){
+                                  Navigator.pop(context);
+                                  if(value){
+                                    Get.to(OtpVerifyScreen(email: authController.emailController.text),transition: Transition.rightToLeft);
+                                  }
+                                });
                               }
                             },
                             color: Colors.grey.shade300,

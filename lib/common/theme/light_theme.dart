@@ -7,7 +7,7 @@ IconThemeData customIconTheme(IconThemeData original) {
   return original.copyWith(color: kGrey900);
 }
 
-ThemeData buildLightTheme(String? language,
+ThemeData buildLightTheme(
     [String fontFamily = 'Roboto', String fontHeader = 'Raleway']) {
   final base = ThemeData.light().copyWith(
     snackBarTheme: SnackBarThemeData(
@@ -51,24 +51,37 @@ ThemeData buildLightTheme(String? language,
     ),
     primaryColorLight: kLightBG,
     primaryIconTheme: customIconTheme(base.iconTheme),
-    textTheme: buildTextTheme(base.textTheme, language, fontFamily, fontHeader),
+    textTheme: buildTextTheme(base.textTheme, fontFamily, fontHeader),
     primaryTextTheme:
-        buildTextTheme(base.primaryTextTheme, language, fontFamily, fontHeader),
+        buildTextTheme(base.primaryTextTheme, fontFamily, fontHeader),
     iconTheme: customIconTheme(base.iconTheme),
     hintColor: Colors.black26,
-    primaryColor: kLightPrimary,
-    scaffoldBackgroundColor: kLightBG,
+    primaryColor: Color(0xFF3498DB),
+    scaffoldBackgroundColor: Colors.white,
+    inputDecorationTheme: const InputDecorationTheme(
+      border: InputBorder.none,
+      enabledBorder: InputBorder.none,
+      filled:true,
+      fillColor: Colors.white,
+      errorBorder: InputBorder.none
+    ),
     appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.white,
+
       elevation: 0,
       titleTextStyle: TextStyle(
-        color: kDarkBG,
+        color: Colors.white,
         fontSize: 18.0,
         fontWeight: FontWeight.w800,
       ),
       iconTheme: IconThemeData(
         color: kLightAccent,
       ),
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
+        systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
+      statusBarColor: Colors.white,
+    ),
     ),
     pageTransitionsTheme: const PageTransitionsTheme(builders: {
       TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),

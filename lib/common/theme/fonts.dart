@@ -15,6 +15,7 @@ TextTheme buildTextTheme(
           fontHeader,
           textStyle: base.displayLarge!.copyWith(
             fontWeight: FontWeight.w700,
+            color: Colors.black
           ),
         ).copyWith(
 
@@ -32,11 +33,12 @@ TextTheme buildTextTheme(
         ),
         headlineMedium: GoogleFonts.getFont(
           fontHeader,
-          textStyle: base.headlineMedium!.copyWith(fontWeight: FontWeight.w700),
+          textStyle: base.headlineMedium!.copyWith(fontWeight: FontWeight.w700,       fontSize: 18,),
         ),
         headlineSmall: GoogleFonts.getFont(
           fontHeader,
-          textStyle: base.headlineSmall!.copyWith(fontWeight: FontWeight.w500),
+          textStyle: base.headlineSmall!.copyWith(       fontSize: 16,fontWeight: FontWeight.bold),
+
         ),
         titleLarge: GoogleFonts.getFont(
           fontHeader,
@@ -44,7 +46,7 @@ TextTheme buildTextTheme(
             fontWeight: FontWeight.normal,
           ),
         ).copyWith(
-            // fontFamily: 'Your Custom Font',
+            fontSize: 18,fontWeight: FontWeight.bold
             ),
         bodySmall: GoogleFonts.getFont(
           fontFamily,
@@ -53,28 +55,37 @@ TextTheme buildTextTheme(
         ),
         titleMedium: GoogleFonts.getFont(
           fontFamily,
-          textStyle: base.titleMedium!.copyWith(),
+          textStyle: base.titleMedium!.copyWith(
+            fontSize: 16,
+            fontWeight: FontWeight.bold
+          ),
         ),
         titleSmall: GoogleFonts.getFont(
           fontFamily,
-          textStyle: base.titleSmall!.copyWith(),
+          textStyle: base.titleSmall!.copyWith(
+            fontSize: 14
+          ),
         ),
         bodyLarge: GoogleFonts.getFont(
           fontFamily,
-          textStyle: base.bodyLarge!.copyWith(),
+          textStyle: base.bodyLarge!.copyWith(
+            fontSize: 16
+          ),
         ),
         bodyMedium: GoogleFonts.getFont(
           fontFamily,
-          textStyle: base.bodyMedium!.copyWith(),
+          textStyle: base.bodyMedium!.copyWith(
+            fontSize: 18
+          ),
         ),
         labelLarge: GoogleFonts.getFont(
           fontFamily,
           textStyle: base.labelLarge!
-              .copyWith(fontWeight: FontWeight.w400, fontSize: 14.0),
+              .copyWith(fontWeight: FontWeight.w400, fontSize: 20.0),
         ),
       )
       .apply(
-        displayColor: kGrey900,
+        displayColor: Colors.black,
         bodyColor: kGrey900,
       );
 }

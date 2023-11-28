@@ -35,7 +35,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   @override
   Widget build(BuildContext context) {
     final theme=Theme.of(context);
-    const length = 6;
+    const length = 4;
     const borderColor = Color.fromRGBO(114, 178, 238, 1);
     const errorColor = Color.fromRGBO(251, 0, 44, 1.0);
     const fillColor = Colors.white;
@@ -83,7 +83,14 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                   focusNode: focusNode,
                   defaultPinTheme: defaultPinTheme,
                   onCompleted: (pin) {
+                    if(authController.OTP==pin){
+                      authController.checkOTPCreateAccount(context, pin);
 
+                    }else{
+                      setState(() {
+                        showError=true;
+                      });
+                    }
                   },
                   focusedPinTheme: defaultPinTheme.copyWith(
                     height: 68,
@@ -106,7 +113,14 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 40,right: 40),
                 child: ElevatedButton(onPressed: () {
-
+                  FocusScope.of(context).unfocus();
+                  if(authController.OTP==controller.text.trim()){
+                    authController.checkOTPCreateAccount(context, controller.text.trim());
+                  }else{
+                    setState(() {
+                      showError=true;
+                    });
+                  }
                 },style: ElevatedButton.styleFrom(
                     fixedSize: const Size.fromHeight(55)
                 ), child: const Text("Code Verify",style: TextStyle(color: Colors.white),),),
